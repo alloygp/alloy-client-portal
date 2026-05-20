@@ -6,6 +6,9 @@ import { pathForScreen } from './useAlloyNav';
 import './styles/01-base.css';
 import './styles/02-components.css';
 import './styles/03-features.css';
+import './styles/04-rise-hero.css';
+import './styles/05-desktop.css';
+import './styles/06-alloy-hero.css';
 
 interface NavItem {
   id: string;
@@ -240,8 +243,14 @@ export default function AlloyShell() {
 
       <main className="main">
         <MainHeader title={title.t} subtitle={title.s} onCommand={handleCommand} />
-        <Outlet context={{ onNav: handleNav }} />
+        <Outlet context={{ onNav: handleNav, mobileNav, setMobileNav }} />
       </main>
     </div>
   );
+}
+
+export interface AlloyOutletContext {
+  onNav: (id: string) => void;
+  mobileNav: boolean;
+  setMobileNav: (v: boolean) => void;
 }

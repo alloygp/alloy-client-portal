@@ -1,0 +1,702 @@
+/* Alloy Client Portal — DESKTOP dashboard layout
+   Kicks in at ≥ 1024px. Mobile (≤ 960px) layout in earlier files is untouched.
+   Tablet range 961–1023px keeps the existing single-column stack. */
+
+/* Desktop-only widgets — hidden by default, shown in the desktop media query */
+.desktop-topbar {
+  display: none;
+}
+.activity-card {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  /* ----- App shell ----- */
+  .app {
+    grid-template-columns: 260px 1fr;
+    transition: grid-template-columns 0.5s cubic-bezier(0.65, 0.05, 0.3, 1);
+  }
+  .app.sidebar-collapsed {
+    transition: grid-template-columns 0.22s cubic-bezier(0.5, 0, 0.6, 1);
+  }
+  .app.sidebar-collapsed {
+    grid-template-columns: 68px 1fr;
+  }
+  .app.sidebar-collapsed .sidebar {
+    overflow: hidden;
+  }
+  .app.sidebar-collapsed .alloy-strip .alloy-word,
+  .app.sidebar-collapsed .alloy-strip .alloy-divider,
+  .app.sidebar-collapsed .alloy-strip .alloy-tag,
+  .app.sidebar-collapsed .nav-item > span:not(.icon),
+  .app.sidebar-collapsed .nav-item .badge-dot,
+  .app.sidebar-collapsed .nav-item .nav-soon-tag,
+  .app.sidebar-collapsed .nav-section-label,
+  .app.sidebar-collapsed .sidebar-footer .who,
+  .app.sidebar-collapsed .sidebar-footer .icon-btn {
+    display: none !important;
+  }
+  .app.sidebar-collapsed .alloy-strip {
+    justify-content: center;
+    padding: 4px 0 12px;
+  }
+  .app.sidebar-collapsed .alloy-strip .alloy-mark {
+    margin: 0;
+  }
+  .app.sidebar-collapsed .nav-item {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .app.sidebar-collapsed .nav-item .icon {
+    margin: 0;
+  }
+  .app.sidebar-collapsed .sidebar-footer {
+    display: flex;
+    justify-content: center;
+  }
+  .app.sidebar-collapsed .sidebar-footer .user-row {
+    justify-content: center;
+    padding: 8px 0;
+  }
+  .rh-crest {
+    width: 112px !important;
+    height: 112px !important;
+  }
+  .main {
+    padding: 28px 40px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .main > * {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ----- Desktop top bar ----- */
+  /* The mobile hero embeds bell + hamburger; on desktop they live in a slim top bar above the content. */
+  .desktop-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 4px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 22px;
+  }
+  .desktop-topbar .crumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .desktop-topbar .crumb .sep {
+    opacity: 0.5;
+  }
+  .desktop-topbar .crumb .now {
+    color: var(--alloy-purple);
+  }
+  .desktop-topbar .grow {
+    flex: 1;
+  }
+  .desktop-topbar .ds-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    width: 340px;
+    color: var(--fg-muted);
+  }
+  .desktop-topbar .ds-search:focus-within {
+    border-color: var(--alloy-purple);
+    box-shadow: 0 0 0 3px var(--alloy-purple-tint);
+  }
+  .desktop-topbar .ds-search input {
+    border: none;
+    outline: none;
+    flex: 1;
+    background: transparent;
+    font-size: 13px;
+    color: var(--fg-2);
+  }
+  .desktop-topbar .ds-search input::placeholder {
+    color: var(--fg-muted);
+  }
+  .desktop-topbar .ds-search kbd {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--alloy-light-gray);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--fg-muted);
+  }
+  .desktop-topbar .ds-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    color: var(--fg-3);
+    position: relative;
+    cursor: pointer;
+  }
+  .desktop-topbar .ds-icon-btn:hover {
+    color: var(--alloy-purple);
+    border-color: var(--alloy-purple);
+  }
+  .desktop-topbar .ds-icon-btn .pulse {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--alloy-pink);
+    box-shadow: 0 0 0 3px rgba(217, 53, 110, 0.18);
+  }
+  .desktop-topbar .ds-cta {
+    padding: 9px 16px;
+    border-radius: 8px;
+    background: var(--alloy-pink);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    border: none;
+  }
+  .desktop-topbar .ds-cta:hover {
+    background: #c12a60;
+    box-shadow: 0 4px 12px rgba(217, 53, 110, 0.3);
+  }
+  .desktop-topbar .ds-ext {
+    font-size: 11px;
+    opacity: 0.55;
+    margin-left: 1px;
+    font-weight: 600;
+  }
+  .desktop-topbar .ds-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--alloy-yellow), var(--alloy-pink));
+    color: var(--alloy-purple);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(56, 28, 79, 0.18);
+    cursor: pointer;
+  }
+
+  /* Hide the mobile bell + hamburger inside the hero on desktop */
+  .rise-hero-mobile-controls {
+    display: none !important;
+  }
+
+  /* Hide the green page-hero banner on non-dashboard screens — desktop has the topbar */
+  .rise-page-hero {
+    display: none !important;
+  }
+
+  /* ----- Hero — billboard layout ----- */
+  .rise-hero {
+    margin-bottom: 22px;
+  }
+  .rise-hero .rise-hero-body {
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 28px 40px;
+    align-items: start;
+  }
+  /* Brand chip + greeting + goal text live on the LEFT column */
+  .rise-hero .rise-hero-brand {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+  .rise-hero .rise-hero-greet-row {
+    grid-column: 1;
+    align-self: end;
+    margin-bottom: 0;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .rise-hero .rise-hero-greet {
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  .rise-hero .rise-hero-date {
+    background: rgba(0, 87, 101, 0.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .rise-hero .rise-hero-goal {
+    grid-column: 1;
+    align-self: start;
+    margin: 0;
+  }
+  /* Progress + CTA on the RIGHT column, vertically centered */
+  .rise-hero .rise-hero-track {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
+    height: 18px;
+  }
+  .rise-hero .rise-hero-track-labels {
+    grid-column: 2;
+    grid-row: 3;
+    margin: 0;
+  }
+  .rise-hero .rise-hero-actions {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    border-top: 1px solid rgba(0, 87, 101, 0.12);
+    padding-top: 18px;
+  }
+  .rise-hero .rise-hero-cta {
+    width: auto;
+    min-width: 280px;
+  }
+  /* Secondary inline hint about scope of dashboard */
+  .rise-hero-coach {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--fg-muted);
+  }
+  .rise-hero-coach b {
+    color: var(--alloy-purple);
+    font-weight: 700;
+  }
+
+  /* ----- Spotlight — 3-column row ----- */
+  .dash-spotlight {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+    margin: 0 0 28px;
+  }
+  .dash-spotlight .dash-feature-card,
+  .dash-spotlight .banner-card {
+    height: 100%;
+  }
+  .dash-spotlight .dash-feature-card {
+    padding: 0 !important;
+  }
+  .dash-spotlight .banner-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .dash-spotlight .banner-card .banner-card-body {
+    flex: 1;
+  }
+  .dash-spotlight .banner-card-head {
+    padding: 18px 22px;
+  }
+  .dash-spotlight .banner-card-head .bc-title {
+    font-size: 19px;
+  }
+  .dash-spotlight .banner-card-body {
+    padding: 18px 22px 22px;
+  }
+
+  /* Spotlight cards use a tighter row design at the smaller column widths */
+  .dash-spotlight .banner-card-body > div[style*='flex-direction:column'] > div,
+  .dash-spotlight .banner-card-body > div > div[style*='background:var(--alloy-off-white)'] {
+    padding: 12px 14px !important;
+  }
+
+  /* ----- Section title spacing ----- */
+  .section-title {
+    margin: 36px 0 22px;
+  }
+
+  /* ----- KPI cards — 2x2 grid on desktop ----- */
+  .col-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px;
+  }
+  .stat-card {
+    padding: 22px 24px;
+  }
+  .stat-card .stat-value {
+    font-size: 38px;
+  }
+
+  /* ----- Metrics + Recognition — title full width, content side by side ----- */
+  .dash-metrics-row {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+  .dash-metrics-row > * {
+    min-width: 0;
+  }
+  .dash-metrics-row .dash-metrics-block,
+  .dash-metrics-row .dash-recognition-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .dash-metrics-row .col-4 {
+    flex: 1;
+    align-content: stretch;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .dash-metrics-row .stat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .dash-metrics-row .stat-card .spark {
+    position: static;
+    margin-top: 8px;
+    align-self: flex-start;
+  }
+  .dash-metrics-row .dash-recognition-block .recognition-tiles-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .dash-metrics-row .dash-recognition-block .rt-grid {
+    flex: 1;
+  }
+
+  /* ----- Footer row: Recognition + Activity side by side ----- */
+  .dash-footer-row {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 22px;
+    margin-top: 8px;
+  }
+  .dash-footer-row .recognition-tiles-card {
+    padding: 24px 26px;
+  }
+  .dash-footer-row .recognition-tiles-card .rt-num {
+    font-size: 36px;
+  }
+
+  /* Activity card desktop styling */
+  .activity-card {
+    background: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow:
+      0 1px 2px rgba(56, 28, 79, 0.04),
+      0 12px 32px rgba(56, 28, 79, 0.06);
+    display: flex;
+    flex-direction: column;
+  }
+  .activity-card .ac-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .activity-card .ac-kicker {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--alloy-pink);
+  }
+  .activity-card .ac-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--alloy-purple);
+    letter-spacing: -0.01em;
+  }
+  .activity-card .ac-link {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    cursor: pointer;
+  }
+  .activity-card .ac-link:hover {
+    color: var(--alloy-purple);
+  }
+  .activity-card .ac-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .activity-card .ac-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border-subtle);
+  }
+  .activity-card .ac-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .activity-card .ac-ic {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .activity-card .ac-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .activity-card .ac-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-2);
+    line-height: 1.45;
+  }
+  .activity-card .ac-meta {
+    font-size: 11px;
+    color: var(--fg-muted);
+    margin-top: 2px;
+  }
+
+  /* Hide the mobile FAB on desktop — desktop has a tweaks toggle in the toolbar */
+  .tweaks-fab {
+    display: none;
+  }
+}
+
+/* Wider desktops — give the hero greeting more breathing room */
+@media (min-width: 1400px) {
+  .rise-hero .rise-hero-greet {
+    font-size: 46px;
+  }
+  .rise-hero-v1 .rh-greet {
+    font-size: 46px;
+  }
+  .main {
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+}
+
+/* ===== V1 desktop hero ===== */
+.rise-hero-desktop {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .rise-hero-mobile-only {
+    display: none !important;
+  }
+  .rise-hero-desktop.rise-hero-v1 {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 36px;
+    padding: 28px 32px;
+    background: #dcefe9;
+    border: 1px solid rgba(0, 87, 101, 0.15);
+    border-radius: var(--radius-lg, 16px);
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rh-crest {
+    position: relative;
+    width: 144px;
+    height: 144px;
+    flex-shrink: 0;
+  }
+  .rh-crest-plain {
+    display: grid;
+    place-items: center;
+  }
+  .rh-crest-plain .rh-crest-mark {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .rh-crest > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+  }
+  .rh-crest-track {
+    stroke: rgba(0, 87, 101, 0.16);
+    stroke-width: 10;
+  }
+  .rh-crest-fill {
+    stroke: #71ba42;
+    stroke-width: 10;
+    stroke-linecap: round;
+  }
+  .rh-crest-inner {
+    position: absolute;
+    inset: 18px;
+    border-radius: 999px;
+    background: #005765;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px;
+  }
+  .rh-crest-inner img.rh-crest-mark {
+    width: 64px;
+    height: 64px;
+    filter: brightness(0) invert(1);
+  }
+  .rh-crest-badge {
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    background: #71ba42;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 87, 101, 0.25);
+    white-space: nowrap;
+  }
+  .rh-crest-tier {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    line-height: 1;
+  }
+  .rh-crest-member {
+    font-size: 9.5px;
+    opacity: 0.7;
+    margin-top: 4px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .rh-body {
+    min-width: 0;
+  }
+  .rh-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .rh-brand-logo {
+    height: 26px;
+    width: auto;
+    display: block;
+  }
+  .rh-brand-q {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 11px;
+    color: #005765;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-left: 14px;
+    border-left: 1px solid rgba(0, 87, 101, 0.25);
+  }
+  .rh-greet {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 40px;
+    color: var(--alloy-purple);
+    letter-spacing: -0.015em;
+    line-height: 1;
+    margin: 0 0 6px;
+  }
+  .rh-sub {
+    font-size: 13px;
+    color: var(--fg-muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .rh-sub strong {
+    color: #005765;
+    font-weight: 700;
+  }
+  .rh-track {
+    height: 14px;
+    background: rgba(0, 87, 101, 0.14);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    max-width: 520px;
+  }
+  .rh-track-fill {
+    position: absolute;
+    inset: 0;
+    width: 38%;
+    background: #71ba42;
+    border-radius: 999px;
+  }
+  .rh-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .rh-date {
+    font-size: 11px;
+    color: var(--fg-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .rh-cta {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 280px;
+    padding: 13px 22px !important;
+    font-size: 13.5px !important;
+    font-family: var(--font-display);
+    font-weight: 700;
+    border-radius: 10px;
+    gap: 14px;
+  }
+  .rh-next-tier {
+    font-size: 11.5px;
+    color: #005765;
+    font-weight: 600;
+  }
+  .rh-next-tier strong {
+    color: #2c8f2c;
+    font-weight: 800;
+  }
+}
