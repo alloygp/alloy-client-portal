@@ -28,8 +28,9 @@ export default function LoginPage() {
     } catch (err: unknown) {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data: { error: string } } }).response?.data?.error
-          : 'Login failed';
+          ? (err as { response?: { data?: { error?: { message?: string } } } }).response?.data
+              ?.error?.message
+          : undefined;
       setError(message || 'Login failed');
     } finally {
       setSubmitting(false);

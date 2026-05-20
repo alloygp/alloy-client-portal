@@ -27,8 +27,9 @@ export default function SignupPage() {
     } catch (err: unknown) {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data: { error: string } } }).response?.data?.error
-          : 'Signup failed';
+          ? (err as { response?: { data?: { error?: { message?: string } } } }).response?.data
+              ?.error?.message
+          : undefined;
       setError(message || 'Signup failed');
     } finally {
       setSubmitting(false);
