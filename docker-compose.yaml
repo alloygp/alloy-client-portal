@@ -79,7 +79,7 @@ services:
 
     env_file:
       - ./server/.env
-    command: ['npm', 'run', 'migrate:all']
+    command: ['sh', '-c', 'npm run build-ts && npm run migrate:all']
 
   client:
     build:
