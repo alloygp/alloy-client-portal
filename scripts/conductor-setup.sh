@@ -82,17 +82,28 @@ for subdir in server client; do
   fi
 done
 
+# upsert KEY=VALUE in a .env file (replace if present, append if not)
+upsert_env() {
+  local file="$1" key="$2" value="$3"
+  if grep -q "^${key}=" "$file"; then
+    perl -i -pe "s|^${key}=.*|${key}=${value}|" "$file"
+  else
+    [ -s "$file" ] && [ "$(tail -c1 "$file")" != "" ] && echo "" >> "$file"
+    echo "${key}=${value}" >> "$file"
+  fi
+}
+
 if [ -f "./server/.env" ]; then
-  perl -i -pe "s|^PORT=[0-9]*|PORT=${SERVER_PORT}|" ./server/.env
-  perl -i -pe "s|^VITE_SERVER_BASE_URL=http://localhost:[0-9]*|VITE_SERVER_BASE_URL=http://localhost:${SERVER_PORT}|" ./server/.env
-  perl -i -pe "s|^VITE_CLIENT_BASE_URL=http://localhost:[0-9]*|VITE_CLIENT_BASE_URL=http://localhost:${CLIENT_PORT}|" ./server/.env
+  upsert_env ./server/.env PORT "${SERVER_PORT}"
+  upsert_env ./server/.env VITE_SERVER_BASE_URL "http://localhost:${SERVER_PORT}"
+  upsert_env ./server/.env VITE_CLIENT_BASE_URL "http://localhost:${CLIENT_PORT}"
   echo "Patched server/.env (PORT=${SERVER_PORT})"
 fi
 
 if [ -f "./client/.env" ]; then
-  perl -i -pe "s|^VITE_SERVER_BASE_URL=http://localhost:[0-9]*|VITE_SERVER_BASE_URL=http://localhost:${SERVER_PORT}|" ./client/.env
-  perl -i -pe "s|^VITE_CLIENT_BASE_URL=http://localhost:[0-9]*|VITE_CLIENT_BASE_URL=http://localhost:${CLIENT_PORT}|" ./client/.env
-  perl -i -pe "s|^VITE_HMR_PORT=[0-9]*|VITE_HMR_PORT=${CLIENT_HMR_PORT}|" ./client/.env
+  upsert_env ./client/.env VITE_SERVER_BASE_URL "http://localhost:${SERVER_PORT}"
+  upsert_env ./client/.env VITE_CLIENT_BASE_URL "http://localhost:${CLIENT_PORT}"
+  upsert_env ./client/.env VITE_HMR_PORT "${CLIENT_HMR_PORT}"
   echo "Patched client/.env"
 fi
 

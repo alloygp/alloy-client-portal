@@ -12,7 +12,8 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       port: 3000,
       hmr: {
-        port: parseInt(env.VITE_HMR_PORT || '3010'),
+        port: 3010,
+        clientPort: parseInt(env.VITE_HMR_PORT || '3010'),
       },
     },
   };
